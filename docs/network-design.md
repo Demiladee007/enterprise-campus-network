@@ -82,7 +82,7 @@ Current VLANs include:
 
 Each VLAN is assigned a dedicated subnet and an SVI on the distribution layer. HSRP virtual IP addresses provide the default gateway for end devices.
 
----
+
 
 ## 6. Routing Design
 
@@ -92,7 +92,7 @@ OSPF was selected because it provides automatic route learning, rapid convergenc
 
 The edge router originates the default route, allowing internal devices to reach external networks through the available ISP connection.
 
----
+
 
 ## 7. High Availability
 
@@ -100,7 +100,10 @@ High availability is incorporated throughout the network.
 
 ### Gateway Redundancy
 
-HSRP provides resilient default gateway services for all VLANs. End devices use the HSRP virtual IP as their default gateway, allowing gateway availability to be maintained if a distribution switch fails.
+
+HSRP provides resilient default gateway services for all user VLANs. To improve resource utilization, HSRP priorities were adjusted so that each distribution switch operates as the active gateway for selected VLANs while serving as the standby gateway for others.
+
+This active/active distribution of gateway responsibilities provides a form of load sharing under normal operating conditions while maintaining automatic failover if a distribution switch becomes unavailable. When the failed switch returns to service, HSRP preemption allows it to automatically resume its preferred active role.
 
 ### Core Redundancy
 
@@ -108,9 +111,12 @@ The core switches are interconnected using a Layer 3 EtherChannel, providing inc
 
 ### Internet Redundancy
 
-The edge router maintains connectivity to two independent Internet Service Providers. NAT failover ensures Internet connectivity is maintained when the primary ISP becomes unavailable.
 
----
+The edge router provides Internet connectivity through two independent Internet Service Providers (ISPs). Dynamic NAT is implemented using route maps to ensure that traffic is translated through the appropriate outside interface based on the active ISP.
+
+During an ISP failure, route-map-based NAT enables new translations to be created using the secondary ISP's outside interface, ensuring that Internet connectivity is maintained after failover.
+
+
 
 ## 8. Design Decisions
 
@@ -124,7 +130,7 @@ The following design decisions were made during implementation:
 * /32 loopback interfaces provide stable router identifiers and management addresses.
 * Dual ISP connectivity improves Internet availability during provider outages.
 
----
+
 
 ## 9. Current Limitations
 
@@ -132,7 +138,6 @@ The current implementation focuses on the wired enterprise campus infrastructure
 
 Wireless networking, headquarters integration, firewall services, VPN connectivity, network monitoring, IPv6, and automation are outside the scope of Version 1 and will be introduced as the project evolves.
 
----
 
 ## 10. Future Enhancements
 
