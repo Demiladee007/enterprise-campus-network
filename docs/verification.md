@@ -181,7 +181,7 @@ The following connectivity tests were successfully completed:
 
 ![Connectivity Tests](../images/ping-results.png)
 ![Connectivity Tests](../images/trace-route.png)
----
+
 
 # 9. Verification Summary
 

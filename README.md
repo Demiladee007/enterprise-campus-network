@@ -46,7 +46,7 @@ The implementation simulates a production environment consisting of dual ISP con
 
 ## Network Topology
 
-![Logical topology diagram](../enterprise-campus-network/topology/topology.png)
+![Logical topology diagram](../enterprise-campus-network/topology/topology.drawio)
 
 
 
